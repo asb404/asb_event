@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>asb event</title>    
+    <link href="{% static 'materialize.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'material-icons.css' %}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+ <nav class="light-blue darken-3">
+    <div class="nav-wrapper">
+      <a href="" class="brand-logo">Event Platform </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="http://127.0.0.1:8000/liked/">Liked Events</a></li>
+        <li><a href="http://127.0.0.1:8000/">All Events</a></li>
+        <li><a class="waves-effect waves-light  modal-trigger" href="#modal1">Add Event</a></li>
+      </ul>
+    </div>
+  </nav>
+  {% comment %} <h4>All Event</h4> {% endcomment %}
+<div id="modal1" class="modal">
+        <div class="modal-content">
+          <h4 >Add New Event</h4>
+    <form method="POST" action="/addformdata/">
+          {% csrf_token %}
+       <div class="row">
+        <div class="input-field col s6">
+          <i class="material-icons prefix">event</i>
+          <input id="evt_name" name="evt_name" type="text" class="validate">
+          <label for="evt_name">Event Name</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">location_on</i>
+          <input id="evt_location" name="evt_location" type="tel" class="validate">
+          <label for="evt_location">Event Location</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">date_range</i>
+          <input id="evt_date" name="evt_date"  type="text" class="validate">
+          <label for="evt_date">Date</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">schedule</i>
+          <input id="evt_time" name="evt_time" type="tel" class="validate">
+          <label for="evt_time">Time</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">image</i>
+          <input id="evt_image" name="evt_image" type="text" class="validate">
+          <label for="evt_image">upload Image Link</label>
+        </div>
+     </div>
+      
+      <div class="input-field col s6">
+          <button type="submit" class="waves-effect waves-light btn positive" id="addevent">ADD Event</button>
+        </div>
+    </form>
+        </div>      
+      </div>
+  </div>
+
+
+<div>
+<br>
+  <div class="row " id="allevents_div">
+      {% for obj in event_all %}
+    <div class="col s3">
+      <div class="card">
+        <div class="card-image">
+          <img src="{{obj.image}}" style="height:200px;"/>
+          <span class="card-title">{{obj.ename}}</span>
+          {% if obj.elike == 't' %}
+          <div class="btn-floating halfway-fab waves-effect waves-light red" id="{{obj.eno}}" onclick='toggle("{{obj.eno}}")' ><i class="material-icons" >favorite_border</i> </div>  
+
+          {% else %}
+          <div class="btn-floating halfway-fab waves-effect waves-light black" id="{{obj.eno}}" onclick='toggle("{{obj.eno}}")' ><i class="material-icons" >favorite_border</i> </div>{% endif %}
+        </div>
+        <div class="card-content">
+          <p><b>Event Name : {{obj.ename}}</b></p>
+          <p><b>Location : {{obj.elocation}}</b></p>
+          <p><b>Date : {{obj.edate}}</b></p>
+          <p><b>Time : {{obj.etime}}</b></p>
+          
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+<div class="row " id="likedevents_div">
+      {% for obj in liked %}
+    <div class="col s3">
+      <div class="card">
+        <div class="card-image">
+          <img src="{{obj.image}}" style="height:200px;"/>
+          <span class="card-title">{{obj.ename}}</span>
+          <div class="btn-floating halfway-fab waves-effect waves-light red" id="like{{obj.eno}}" onclick='toggle(this,"{{obj.eno}}")' ><i class="material-icons" >favorite_border</i> </div>
+        </div>
+        <div class="card-content">
+          <p><b>Event Name : {{obj.ename}}</b></p>
+          <p><b>Location : {{obj.elocation}}</b></p>
+          <p><b>Date : {{obj.edate}}</b></p>
+          <p><b>Time : {{obj.etime}}</b></p>
+          
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  </div>  
+  </div>
+    <script src="{% static 'materialize.min.js' %}"></script>    
+  <script src="{% static 'script/index.js' %}"></script>
+
+  
+     </body>
+</html>
